@@ -311,7 +311,10 @@ func ParseDeviceStatsText(output string) []disk.DeviceStat {
 			continue
 		}
 		device, counter, found := strings.Cut(strings.TrimPrefix(fields[0], "["), "].")
-		if !found {
+		// A counter with no device in front of it names nothing: keeping it
+		// would put a nameless row of zeros on the device table, where every
+		// row is supposed to be a disk the error counters belong to.
+		if !found || device == "" {
 			continue
 		}
 		stat, ok := byDevice[device]
