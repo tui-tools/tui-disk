@@ -1,0 +1,40 @@
+{
+  "json_format_version": [ 1, 0 ],
+  "smartctl": {
+    "version": [ 7, 5 ],
+    "argv": [ "smartctl", "--json=c", "-a", "/dev/nvme0n1" ],
+    "exit_status": 0
+  },
+  "device": { "name": "/dev/nvme0n1", "info_name": "/dev/nvme0n1", "type": "nvme", "protocol": "NVMe" },
+  "model_name": "SAMSUNG MZVL2512HCJQ",
+  "serial_number": "S64ANE0T000001",
+  "firmware_version": "FXM7801Q",
+  "nvme_total_capacity": 512110190592,
+  "smart_status": { "passed": true, "nvme": { "value": 0 } },
+  "nvme_smart_health_information_log": {
+    "critical_warning": 0,
+    "temperature": 41,
+    "available_spare": 100,
+    "available_spare_threshold": 10,
+    "percentage_used": 3,
+    "data_units_read": 41055216,
+    "data_units_written": 39121188,
+    "power_cycles": 1904,
+    "power_on_hours": 4210,
+    "unsafe_shutdowns": 71,
+    "media_errors": 0,
+    "num_err_log_entries": 0
+  },
+  "temperature": { "current": 41 },
+  "power_on_time": { "hours": 4210 },
+  "nvme_self_test_log": {
+    "current_self_test_operation": { "value": 0, "string": "No self-test in progress" },
+    "table": [
+      {
+        "self_test_code": { "value": 1, "string": "Short" },
+        "self_test_result": { "value": 0, "string": "Completed without error" },
+        "power_on_hours": 4180
+      }
+    ]
+  }
+}

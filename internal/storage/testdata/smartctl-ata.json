@@ -1,0 +1,47 @@
+{
+  "json_format_version": [ 1, 0 ],
+  "smartctl": {
+    "version": [ 7, 5 ],
+    "argv": [ "smartctl", "--json=c", "-a", "/dev/sda" ],
+    "exit_status": 0
+  },
+  "device": { "name": "/dev/sda", "info_name": "/dev/sda [SAT]", "type": "sat", "protocol": "ATA" },
+  "model_family": "Western Digital Red",
+  "model_name": "WDC WD20EFAX-68B",
+  "serial_number": "WD-000000000002",
+  "firmware_version": "82.00A82",
+  "user_capacity": { "blocks": 3907029168, "bytes": 2000398934016 },
+  "rotation_rate": 5400,
+  "smart_status": { "passed": true },
+  "ata_smart_attributes": {
+    "revision": 16,
+    "table": [
+      { "id": 1, "name": "Raw_Read_Error_Rate", "value": 200, "worst": 200, "thresh": 51, "raw": { "value": 0, "string": "0" } },
+      { "id": 5, "name": "Reallocated_Sector_Ct", "value": 200, "worst": 200, "thresh": 140, "raw": { "value": 2, "string": "2" } },
+      { "id": 9, "name": "Power_On_Hours", "value": 63, "worst": 63, "thresh": 0, "raw": { "value": 26914, "string": "26914" } },
+      { "id": 194, "name": "Temperature_Celsius", "value": 112, "worst": 105, "thresh": 0, "raw": { "value": 38, "string": "38" } },
+      { "id": 197, "name": "Current_Pending_Sector", "value": 200, "worst": 200, "thresh": 0, "raw": { "value": 0, "string": "0" } },
+      { "id": 198, "name": "Offline_Uncorrectable", "value": 100, "worst": 253, "thresh": 0, "raw": { "value": 0, "string": "0" } }
+    ]
+  },
+  "power_on_time": { "hours": 26914 },
+  "temperature": { "current": 38 },
+  "ata_smart_self_test_log": {
+    "standard": {
+      "revision": 1,
+      "table": [
+        {
+          "type": { "value": 1, "string": "Short offline" },
+          "status": { "value": 0, "string": "Completed without error", "passed": true },
+          "lifetime_hours": 26890
+        },
+        {
+          "type": { "value": 2, "string": "Extended offline" },
+          "status": { "value": 0, "string": "Completed without error", "passed": true },
+          "lifetime_hours": 26102
+        }
+      ],
+      "count": 2
+    }
+  }
+}

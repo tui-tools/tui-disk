@@ -1,0 +1,362 @@
+{
+   "filesystems": [
+      {
+         "target": "/",
+         "source": "/dev/nvme1n1p7[/fedora]",
+         "fstype": "btrfs",
+         "options": "rw,relatime,compress=zstd:1,ssd,discard=async,space_cache=v2,subvolid=256,subvol=/fedora",
+         "size": "328.3G",
+         "used": "278.6G",
+         "avail": "48.9G",
+         "use%": "85%",
+         "children": [
+            {
+               "target": "/dev",
+               "source": "devtmpfs",
+               "fstype": "devtmpfs",
+               "options": "rw,nosuid,size=32648120k,nr_inodes=8162030,mode=755,inode64",
+               "size": "31.1G",
+               "used": "0",
+               "avail": "31.1G",
+               "use%": "0%",
+               "children": [
+                  {
+                     "target": "/dev/hugepages",
+                     "source": "hugetlbfs",
+                     "fstype": "hugetlbfs",
+                     "options": "rw,nosuid,nodev,relatime,pagesize=2M",
+                     "size": "0",
+                     "used": "0",
+                     "avail": "0",
+                     "use%": "-"
+                  },
+                  {
+                     "target": "/dev/mqueue",
+                     "source": "mqueue",
+                     "fstype": "mqueue",
+                     "options": "rw,nosuid,nodev,noexec,relatime",
+                     "size": "0",
+                     "used": "0",
+                     "avail": "0",
+                     "use%": "-"
+                  },
+                  {
+                     "target": "/dev/shm",
+                     "source": "tmpfs",
+                     "fstype": "tmpfs",
+                     "options": "rw,nosuid,nodev,inode64",
+                     "size": "31.3G",
+                     "used": "167.9M",
+                     "avail": "31.1G",
+                     "use%": "1%"
+                  },
+                  {
+                     "target": "/dev/pts",
+                     "source": "devpts",
+                     "fstype": "devpts",
+                     "options": "rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000",
+                     "size": "0",
+                     "used": "0",
+                     "avail": "0",
+                     "use%": "-"
+                  }
+               ]
+            },
+            {
+               "target": "/sys",
+               "source": "sysfs",
+               "fstype": "sysfs",
+               "options": "rw,nosuid,nodev,noexec,relatime",
+               "size": "0",
+               "used": "0",
+               "avail": "0",
+               "use%": "-",
+               "children": [
+                  {
+                     "target": "/sys/kernel/tracing",
+                     "source": "tracefs",
+                     "fstype": "tracefs",
+                     "options": "rw,nosuid,nodev,noexec,relatime",
+                     "size": "0",
+                     "used": "0",
+                     "avail": "0",
+                     "use%": "-"
+                  },
+                  {
+                     "target": "/sys/kernel/debug",
+                     "source": "debugfs",
+                     "fstype": "debugfs",
+                     "options": "rw,nosuid,nodev,noexec,relatime",
+                     "size": "0",
+                     "used": "0",
+                     "avail": "0",
+                     "use%": "-"
+                  },
+                  {
+                     "target": "/sys/fs/fuse/connections",
+                     "source": "fusectl",
+                     "fstype": "fusectl",
+                     "options": "rw,nosuid,nodev,noexec,relatime",
+                     "size": "0",
+                     "used": "0",
+                     "avail": "0",
+                     "use%": "-"
+                  },
+                  {
+                     "target": "/sys/kernel/security",
+                     "source": "securityfs",
+                     "fstype": "securityfs",
+                     "options": "rw,nosuid,nodev,noexec,relatime",
+                     "size": "0",
+                     "used": "0",
+                     "avail": "0",
+                     "use%": "-"
+                  },
+                  {
+                     "target": "/sys/fs/cgroup",
+                     "source": "cgroup2",
+                     "fstype": "cgroup2",
+                     "options": "rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot",
+                     "size": "0",
+                     "used": "0",
+                     "avail": "0",
+                     "use%": "-"
+                  },
+                  {
+                     "target": "/sys/fs/pstore",
+                     "source": "none",
+                     "fstype": "pstore",
+                     "options": "rw,nosuid,nodev,noexec,relatime",
+                     "size": "0",
+                     "used": "0",
+                     "avail": "0",
+                     "use%": "-"
+                  },
+                  {
+                     "target": "/sys/firmware/efi/efivars",
+                     "source": "efivarfs",
+                     "fstype": "efivarfs",
+                     "options": "rw,nosuid,nodev,noexec,relatime",
+                     "size": "192K",
+                     "used": "129.9K",
+                     "avail": "57.1K",
+                     "use%": "68%"
+                  },
+                  {
+                     "target": "/sys/fs/bpf",
+                     "source": "bpf",
+                     "fstype": "bpf",
+                     "options": "rw,nosuid,nodev,noexec,relatime,mode=700",
+                     "size": "0",
+                     "used": "0",
+                     "avail": "0",
+                     "use%": "-"
+                  },
+                  {
+                     "target": "/sys/kernel/config",
+                     "source": "configfs",
+                     "fstype": "configfs",
+                     "options": "rw,nosuid,nodev,noexec,relatime",
+                     "size": "0",
+                     "used": "0",
+                     "avail": "0",
+                     "use%": "-"
+                  }
+               ]
+            },
+            {
+               "target": "/proc",
+               "source": "proc",
+               "fstype": "proc",
+               "options": "rw,nosuid,nodev,noexec,relatime",
+               "size": "0",
+               "used": "0",
+               "avail": "0",
+               "use%": "-",
+               "children": [
+                  {
+                     "target": "/proc/sys/fs/binfmt_misc",
+                     "source": "systemd-1",
+                     "fstype": "autofs",
+                     "options": "rw,relatime,fd=37,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=10561",
+                     "size": "0",
+                     "used": "0",
+                     "avail": "0",
+                     "use%": "-",
+                     "children": [
+                        {
+                           "target": "/proc/sys/fs/binfmt_misc",
+                           "source": "binfmt_misc",
+                           "fstype": "binfmt_misc",
+                           "options": "rw,nosuid,nodev,noexec,relatime",
+                           "size": "0",
+                           "used": "0",
+                           "avail": "0",
+                           "use%": "-"
+                        }
+                     ]
+                  }
+               ]
+            },
+            {
+               "target": "/run",
+               "source": "tmpfs",
+               "fstype": "tmpfs",
+               "options": "rw,nosuid,nodev,size=13111168k,nr_inodes=819200,mode=755,inode64",
+               "size": "12.5G",
+               "used": "2.9M",
+               "avail": "12.5G",
+               "use%": "0%",
+               "children": [
+                  {
+                     "target": "/run/credentials/systemd-journald.service",
+                     "source": "tmpfs",
+                     "fstype": "tmpfs",
+                     "options": "ro,nosuid,nodev,noexec,relatime,nosymfollow,size=1024k,nr_inodes=1024,mode=700,inode64,noswap",
+                     "size": "1M",
+                     "used": "0",
+                     "avail": "1M",
+                     "use%": "0%"
+                  },
+                  {
+                     "target": "/run/credentials/systemd-cryptsetup@home.service",
+                     "source": "tmpfs",
+                     "fstype": "tmpfs",
+                     "options": "ro,nosuid,nodev,noexec,relatime,nosymfollow,size=1024k,nr_inodes=1024,mode=700,inode64,noswap",
+                     "size": "1M",
+                     "used": "0",
+                     "avail": "1M",
+                     "use%": "0%"
+                  },
+                  {
+                     "target": "/run/credentials/systemd-resolved.service",
+                     "source": "tmpfs",
+                     "fstype": "tmpfs",
+                     "options": "ro,nosuid,nodev,noexec,relatime,nosymfollow,size=1024k,nr_inodes=1024,mode=700,inode64,noswap",
+                     "size": "1M",
+                     "used": "0",
+                     "avail": "1M",
+                     "use%": "0%"
+                  },
+                  {
+                     "target": "/run/docker/netns/default",
+                     "source": "nsfs[net:[4026531833]]",
+                     "fstype": "nsfs",
+                     "options": "rw",
+                     "size": null,
+                     "used": null,
+                     "avail": null,
+                     "use%": null
+                  },
+                  {
+                     "target": "/run/user/1000",
+                     "source": "tmpfs",
+                     "fstype": "tmpfs",
+                     "options": "rw,nosuid,nodev,relatime,size=6555580k,nr_inodes=1638895,mode=700,uid=1000,gid=1000,inode64",
+                     "size": "6.3G",
+                     "used": "14.8M",
+                     "avail": "6.2G",
+                     "use%": "0%",
+                     "children": [
+                        {
+                           "target": "/run/user/1000/gvfs",
+                           "source": "gvfsd-fuse",
+                           "fstype": "fuse.gvfsd-fuse",
+                           "options": "rw,nosuid,nodev,relatime,user_id=1000,group_id=1000",
+                           "size": "0",
+                           "used": "0",
+                           "avail": "0",
+                           "use%": "-"
+                        },
+                        {
+                           "target": "/run/user/1000/doc",
+                           "source": "portal",
+                           "fstype": "fuse.portal",
+                           "options": "rw,nosuid,nodev,relatime,user_id=1000,group_id=1000",
+                           "size": null,
+                           "used": null,
+                           "avail": null,
+                           "use%": null
+                        }
+                     ]
+                  }
+               ]
+            },
+            {
+               "target": "/tmp",
+               "source": "tmpfs",
+               "fstype": "tmpfs",
+               "options": "rw,nosuid,nodev,size=32777916k,nr_inodes=1048576,inode64",
+               "size": "31.3G",
+               "used": "7.6G",
+               "avail": "23.6G",
+               "use%": "24%",
+               "children": [
+                  {
+                     "target": "/tmp/.mount_nosqlbzDNxOM",
+                     "source": "nosqlbooster4mongo-8.1.10.AppImage",
+                     "fstype": "fuse.nosqlbooster4mongo-8.1.10.AppImage",
+                     "options": "ro,nosuid,nodev,relatime,user_id=1000,group_id=1000",
+                     "size": "0",
+                     "used": "0",
+                     "avail": "0",
+                     "use%": "-"
+                  }
+               ]
+            },
+            {
+               "target": "/boot",
+               "source": "/dev/nvme1n1p6",
+               "fstype": "ext3",
+               "options": "rw,relatime",
+               "size": "974.7M",
+               "used": "423.6M",
+               "avail": "499.9M",
+               "use%": "43%",
+               "children": [
+                  {
+                     "target": "/boot/efi",
+                     "source": "/dev/nvme1n1p5",
+                     "fstype": "vfat",
+                     "options": "rw,relatime,fmask=0077,dmask=0077,codepage=437,iocharset=ascii,shortname=winnt,errors=remount-ro",
+                     "size": "1022M",
+                     "used": "19.3M",
+                     "avail": "1002.7M",
+                     "use%": "2%"
+                  }
+               ]
+            },
+            {
+               "target": "/ntfs_dados",
+               "source": "/dev/nvme0n1p2",
+               "fstype": "fuseblk",
+               "options": "rw,relatime,user_id=0,group_id=0,default_permissions,allow_other,blksize=4096",
+               "size": "477.2G",
+               "used": "369.7G",
+               "avail": "107.5G",
+               "use%": "77%"
+            },
+            {
+               "target": "/home",
+               "source": "/dev/mapper/home",
+               "fstype": "ext4",
+               "options": "rw,relatime",
+               "size": "1.4T",
+               "used": "1.2T",
+               "avail": "155.9G",
+               "use%": "84%"
+            },
+            {
+               "target": "/var/lib/nfs/rpc_pipefs",
+               "source": "sunrpc",
+               "fstype": "rpc_pipefs",
+               "options": "rw,relatime",
+               "size": "0",
+               "used": "0",
+               "avail": "0",
+               "use%": "-"
+            }
+         ]
+      }
+   ]
+}

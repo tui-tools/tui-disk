@@ -1,0 +1,28 @@
+{
+  "json_format_version": [ 1, 0 ],
+  "smartctl": { "version": [ 7, 5 ], "exit_status": 8 },
+  "device": { "name": "/dev/sdc", "type": "sat", "protocol": "ATA" },
+  "model_name": "ST1000DM003-1CH162",
+  "serial_number": "Z1D000000003",
+  "smart_status": { "passed": false },
+  "temperature": { "current": 52 },
+  "power_on_time": { "hours": 48210 },
+  "ata_smart_attributes": {
+    "table": [
+      { "id": 5, "name": "Reallocated_Sector_Ct", "raw": { "value": 1184, "string": "1184" } },
+      { "id": 197, "name": "Current_Pending_Sector", "raw": { "value": 96, "string": "96" } }
+    ]
+  },
+  "ata_smart_self_test_log": {
+    "standard": {
+      "table": [
+        {
+          "type": { "value": 2, "string": "Extended offline" },
+          "status": { "value": 121, "string": "Completed: read failure", "passed": false },
+          "lifetime_hours": 48190,
+          "lba": { "value": 1902348, "string": "1902348" }
+        }
+      ]
+    }
+  }
+}

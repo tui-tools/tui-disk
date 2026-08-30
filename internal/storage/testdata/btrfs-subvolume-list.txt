@@ -1,0 +1,4 @@
+ID 256 gen 41822 parent 5 top level 5 path @
+ID 257 gen 41822 parent 5 top level 5 path @home
+ID 312 gen 41390 parent 5 top level 5 path @snapshots
+ID 998 gen 41102 parent 257 top level 257 path @home/user/.cache/subvol

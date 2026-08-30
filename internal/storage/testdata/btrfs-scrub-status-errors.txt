@@ -1,0 +1,11 @@
+UUID:             0f2b1c44-2222-4a2b-9c3d-000000000002
+Scrub started:    Mon Aug 25 02:00:03 2026
+Status:           running
+Duration:         0:04:12
+Time left:        0:31:08
+Total to scrub:   1.36TiB
+Rate:             98.14MiB/s
+Error summary:    read=2 csum=1
+  Corrected:      1
+  Uncorrectable:  2
+  Unverified:     0

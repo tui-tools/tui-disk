@@ -1,0 +1,15 @@
+Filesystem       Type      Size  Used Avail Use% Mounted on
+/dev/nvme1n1p7   btrfs     329G  279G   49G  86% /
+devtmpfs         devtmpfs   32G     0   32G   0% /dev
+tmpfs            tmpfs      32G  172M   32G   1% /dev/shm
+efivarfs         efivarfs  192K  130K   58K  70% /sys/firmware/efi/efivars
+tmpfs            tmpfs      13G  3.0M   13G   1% /run
+tmpfs            tmpfs     1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+tmpfs            tmpfs     1.0M     0  1.0M   0% /run/credentials/systemd-cryptsetup@home.service
+tmpfs            tmpfs      32G  7.7G   24G  25% /tmp
+/dev/nvme1n1p6   ext3      975M  424M  500M  46% /boot
+/dev/nvme1n1p5   vfat     1022M   20M 1003M   2% /boot/efi
+/dev/nvme0n1p2   fuseblk   478G  370G  108G  78% /ntfs_dados
+/dev/mapper/home ext4      1.4T  1.2T  156G  89% /home
+tmpfs            tmpfs     1.0M     0  1.0M   0% /run/credentials/systemd-resolved.service
+tmpfs            tmpfs     6.3G   15M  6.3G   1% /run/user/1000

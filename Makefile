@@ -1,8 +1,8 @@
-# tui-template — build, test and lint.
+# tui-disk — build, test and lint.
 
 GO      ?= go
 BIN     ?= bin
-TOOL    := tui-template
+TOOL    := tui-disk
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
 LDFLAGS := -s -w -X main.version=$(VERSION)
 # The screenshot renderer is shared by the whole family and ships with the
@@ -65,7 +65,12 @@ tidy:
 screenshots: build
 	python3 $(KIT)/tools/render-screenshots.py \
 		--bin $(BIN)/$(TOOL) --name $(TOOL) --out docs/screenshots \
-		--screen main= --screen touch=t --screen help=?
+		--screen devices=j \
+		--screen 'mounts=2jjjj' \
+		--screen 'fstab=2jjjje' \
+		--screen 'diff=2jjjje\r' \
+		--screen 'btrfs=3\r' \
+		--screen 'smart=4j\r'
 
 ## readme: regenerate the generated README sections from tool.json.
 readme:
@@ -82,7 +87,6 @@ compat:
 ## check-exec: assert that only a backend package starts a process.
 check-exec:
 	bash $(KIT)/tools/check-exec.sh .
-
 
 ## manifest: validate tool.json against the family schema in tui-kit.
 manifest:

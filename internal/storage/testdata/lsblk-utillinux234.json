@@ -1,0 +1,10 @@
+{
+   "blockdevices": [
+      {"name":"sda", "kname":"sda", "type":"disk", "size":"1.8T", "fstype":null, "fsused":null, "fsuse%":null, "mountpoint":null, "label":null, "uuid":null, "model":"WDC WD20EFAX-68B", "serial":"WD-000000000002", "rota":"1", "tran":"sata", "rm":"0", "ro":"0", "partuuid":null,
+         "children": [
+            {"name":"sda1", "kname":"sda1", "type":"part", "size":"1.8T", "fstype":"ext4", "fsused":"1.4T", "fsuse%":"79%", "mountpoint":"/data", "label":"data", "uuid":"0f2b1c44-2222-4a2b-9c3d-000000000002", "model":null, "serial":null, "rota":"1", "tran":null, "rm":"0", "ro":"0", "partuuid":"bbbb2222-0002-4000-8000-000000000001"}
+         ]
+      },
+      {"name":"sr0", "kname":"sr0", "type":"rom", "size":"1024M", "fstype":null, "fsused":null, "fsuse%":null, "mountpoint":null, "label":null, "uuid":null, "model":"QEMU DVD-ROM", "serial":null, "rota":"1", "tran":"sata", "rm":"1", "ro":"0", "partuuid":null}
+   ]
+}

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "name": "tui-template",
-  "binary": "tui-template",
-  "tagline": "A working skeleton for a new tui-tools tool",
-  "description": "The starting point for a new tool in the family. Press **Use this template**, rename it, replace one package, and you have a tool that looks and behaves like the rest.\n\nIt is not a pile of TODOs: it is a working tool. It lists the files in a directory and can update a file's timestamp, which is deliberately trivial — what matters is the shape around it, and that shape is already correct: the action table that generates the key map, the help screen and the confirm dialog; the backend interface with a real and a fake implementation; `--demo`; CI; and GoReleaser.\n\nThis `tool.json` is itself the example. It is a valid manifest, validated against [the schema](https://github.com/tui-tools/tui-kit/blob/main/schema/tool.schema.json) on every CI run, and the values are the ones you replace.",
-  "category": "template",
-  "homepage": "https://github.com/tui-tools/tui-template",
-  "repo": "https://github.com/tui-tools/tui-template",
+  "name": "tui-disk",
+  "binary": "tui-disk",
+  "tagline": "Disks, mounts, fstab, btrfs and SMART health on one screen, with every change previewed before it runs",
+  "description": "A terminal UI for the machine's storage. Five screens over one read: the block devices with their filesystems and usage bars, the mount table crossed against `/etc/fstab`, the btrfs filesystems in full, the SMART health of every drive, and what `df` says about free space.\n\nThe mounts screen is the one that earns its keep. It shows what is mounted now next to what fstab says will be mounted next boot, and marks every row where those disagree: a filesystem mounted by hand that will vanish on reboot, an fstab entry that failed to mount and nobody noticed, and options fstab asks for that are not in effect.\n\nChanges are previewed. Mounting and unmounting an fstab entry, starting or cancelling a btrfs scrub or balance, starting a drive self-test, and editing `/etc/fstab` — which is validated with `findmnt --verify` against the staged file *before* the dialog opens, shown as a unified diff, then installed with `install -m 644` and applied with `systemctl daemon-reload` — all go through a confirm dialog carrying the exact command line.\n\nReads that need root take `sudo -n` and nothing else: a machine where that prompts loses the subvolume list and the drive health, keeps everything else, and says which.\n\nRun `tui-disk --demo` to drive a sample machine: an NVMe root on btrfs with three subvolumes, a spinning disk with two reallocated sectors, a USB stick mounted by hand and one fstab mismatch. Every key works, every command is built and previewed for real, and nothing touches your system.",
+  "category": "storage",
+  "homepage": "https://github.com/tui-tools/tui-disk",
+  "repo": "https://github.com/tui-tools/tui-disk",
   "license": "MIT",
   "platforms": [
     "linux/amd64",
@@ -16,30 +16,74 @@
   "logo": "assets/logo.png",
   "screenshots": [
     {
-      "path": "docs/screenshots/tui-template-main.png",
-      "caption": "The list: the four bands every tool in the family draws"
+      "path": "docs/screenshots/tui-disk-devices.png",
+      "caption": "The device tree: size, filesystem, usage and the SMART verdict of every disk"
     },
     {
-      "path": "docs/screenshots/tui-template-touch.png",
-      "caption": "The confirm dialog, showing the exact command line before it runs"
+      "path": "docs/screenshots/tui-disk-mounts.png",
+      "caption": "The mount table crossed with fstab, with every disagreement marked"
     },
     {
-      "path": "docs/screenshots/tui-template-help.png",
-      "caption": "The help screen, generated from the action table"
+      "path": "docs/screenshots/tui-disk-fstab.png",
+      "caption": "The guided fstab editor: a device by UUID, a mount point, a type and an options preset"
+    },
+    {
+      "path": "docs/screenshots/tui-disk-diff.png",
+      "caption": "Writing that entry: findmnt verified the staged file, then the diff and the two commands that apply it"
+    },
+    {
+      "path": "docs/screenshots/tui-disk-btrfs.png",
+      "caption": "One btrfs filesystem: allocation, subvolumes, scrub, balance and the per-device error counters"
+    },
+    {
+      "path": "docs/screenshots/tui-disk-smart.png",
+      "caption": "Drive health: the self-assessment, temperature, hours and the counters that predict a failure"
     }
   ],
   "keys": [
     {
-      "key": "t",
-      "action": "Touch the selected file"
+      "key": "1…5 / tab",
+      "action": "Switch between devices, mounts, btrfs, health and space"
+    },
+    {
+      "key": "enter",
+      "action": "Open the selected row in full"
+    },
+    {
+      "key": "m / u",
+      "action": "Mount or unmount the selected fstab entry"
+    },
+    {
+      "key": "e",
+      "action": "Edit the fstab entry for the selected row, with a diff to confirm"
+    },
+    {
+      "key": "a",
+      "action": "Add an fstab entry, picking the device by UUID"
+    },
+    {
+      "key": "D",
+      "action": "Reload the systemd units generated from fstab"
+    },
+    {
+      "key": "c / C",
+      "action": "Start or cancel a btrfs scrub"
+    },
+    {
+      "key": "b / B",
+      "action": "Start or cancel a btrfs balance, with a block group filter"
+    },
+    {
+      "key": "s / S",
+      "action": "Start a short or extended drive self-test"
     },
     {
       "key": "/",
-      "action": "Filter the list"
+      "action": "Filter the current screen across every column"
     },
     {
-      "key": "r / ctrl+r",
-      "action": "Re-read the directory"
+      "key": "R",
+      "action": "Re-read the storage"
     },
     {
       "key": "?",
@@ -52,84 +96,174 @@
   ],
   "backends": [
     {
-      "name": "coreutils",
-      "binary": "touch",
+      "name": "util-linux",
+      "binary": "lsblk",
       "versionCommand": [
-        "touch",
+        "lsblk",
         "--version"
       ],
-      "versionRegex": "coreutils\\) ([0-9][0-9.]*)",
-      "minimum": "8.0",
+      "versionRegex": "util-linux ([0-9.]+)",
+      "minimum": "2.34",
       "searchPaths": [
-        "/usr/bin/touch",
-        "/bin/touch"
+        "/usr/bin/lsblk",
+        "/bin/lsblk"
       ],
       "features": [
         {
-          "name": "no-dereference",
-          "since": "8.1"
+          "name": "mountpoints",
+          "since": "2.37"
         }
       ],
       "notes": [
         {
-          "range": "<8.1",
-          "impact": "`touch -h` is missing, so the timestamp of a symlink is set on its target instead of on the link"
+          "range": "<2.37",
+          "impact": "lsblk has no `MOUNTPOINTS` column, so the single-valued `MOUNTPOINT` is asked for instead; a device mounted at several paths reports only the first one. lsblk fails the whole call on a column name it does not know, so this is a gate rather than a fallback"
+        },
+        {
+          "range": ">=2.34",
+          "impact": "`blkid` reads /dev directly and answers an unprivileged caller with an empty body and exit 0, so the fstab editor's device picker escalates with `sudo -n` and falls back to the UUIDs lsblk already reported when it cannot"
         }
-      ]
+      ],
+      "tested": []
+    },
+    {
+      "name": "btrfs-progs",
+      "binary": "btrfs",
+      "versionCommand": [
+        "btrfs",
+        "--version"
+      ],
+      "versionRegex": "btrfs-progs v([0-9.]+)",
+      "minimum": "5.10",
+      "searchPaths": [
+        "/usr/sbin/btrfs",
+        "/sbin/btrfs",
+        "/usr/bin/btrfs"
+      ],
+      "features": [
+        {
+          "name": "json-output",
+          "since": "5.15"
+        }
+      ],
+      "notes": [
+        {
+          "range": ">=5.10",
+          "impact": "`--format json` is supported per command, not globally: `device stats` and `filesystem df` emit JSON, while `filesystem usage`, `subvolume list`, `scrub status` and `balance status` answer \"output format json is unsupported for this command\" through 6.19 at least, so those four are read from their text output"
+        },
+        {
+          "range": ">=5.10",
+          "impact": "`subvolume list`, `qgroup show` and `balance status` refuse an unprivileged caller with \"Operation not permitted\"; they are retried with `sudo -n`, and a machine that cannot escalate shows those sections empty with a note saying so"
+        },
+        {
+          "range": "<5.15",
+          "impact": "no `--format json` at all, so `device stats` is read from its text output too"
+        }
+      ],
+      "tested": []
+    },
+    {
+      "name": "smartmontools",
+      "binary": "smartctl",
+      "versionCommand": [
+        "smartctl",
+        "--version"
+      ],
+      "versionRegex": "smartctl ([0-9.]+)",
+      "minimum": "7.0",
+      "searchPaths": [
+        "/usr/sbin/smartctl",
+        "/sbin/smartctl",
+        "/usr/bin/smartctl"
+      ],
+      "features": [
+        {
+          "name": "json-output",
+          "since": "7.0"
+        }
+      ],
+      "notes": [
+        {
+          "range": "<7.0",
+          "impact": "`smartctl --json` does not exist, and the health of every drive is reported as unknown rather than scraped out of a table meant for human eyes"
+        },
+        {
+          "range": ">=7.0",
+          "impact": "reading SMART needs the raw device, so it escalates with `sudo -n`; a drive behind a USB bridge that passes no SMART through, and a virtual disk that has no firmware, both come back unknown with the reason smartctl gave"
+        }
+      ],
+      "tested": []
     }
   ],
   "install": {
-    "source": {
-      "available": true,
-      "command": "git clone https://github.com/tui-tools/tui-template\ncd tui-template && make demo",
-      "url": "https://github.com/tui-tools/tui-template",
-      "note": "Or press \"Use this template\" on GitHub, which is the point of it."
-    },
     "pacman": {
       "available": false,
-      "package": "tui-template",
+      "package": "tui-disk",
       "repo": "tui-tools",
       "requires_repo_setup": true,
-      "command": "sudo pacman -S tui-template",
+      "command": "sudo pacman -S tui-disk",
       "url": "https://pkgs.tui.tools/arch",
-      "note": "The template is never packaged. This entry shows your tool's shape."
+      "note": "Add the tui-tools repository to pacman.conf first."
+    },
+    "aur": {
+      "available": false,
+      "package": "tui-disk-bin",
+      "repo": "aur",
+      "command": "paru -S tui-disk-bin",
+      "url": "https://aur.archlinux.org/packages/tui-disk-bin",
+      "note": "The -bin package installs the released static binary."
     },
     "apt": {
       "available": false,
-      "package": "tui-template",
+      "package": "tui-disk",
       "repo": "tui-tools",
       "requires_repo_setup": true,
-      "command": "sudo apt install tui-template",
+      "command": "sudo apt install tui-disk",
       "url": "https://pkgs.tui.tools/deb",
-      "note": "The template is never packaged. This entry shows your tool's shape."
+      "note": "Add the tui-tools apt repository and its keyring first."
     },
     "dnf": {
       "available": false,
-      "package": "tui-template",
+      "package": "tui-disk",
       "repo": "tui-tools",
       "requires_repo_setup": true,
-      "command": "sudo dnf install tui-template",
+      "command": "sudo dnf install tui-disk",
       "url": "https://pkgs.tui.tools/rpm",
-      "note": "The template is never packaged. This entry shows your tool's shape."
+      "note": "Add the tui-tools.repo file first."
+    },
+    "zypper": {
+      "available": false,
+      "package": "tui-disk",
+      "repo": "tui-tools",
+      "requires_repo_setup": true,
+      "command": "sudo zypper install tui-disk",
+      "url": "https://pkgs.tui.tools/rpm",
+      "note": "Add the tui-tools repository first."
     },
     "binary": {
-      "available": false,
-      "pattern": "tui-template_{version}_linux_{arch}.tar.gz",
-      "command": "curl -fsSL https://github.com/tui-tools/tui-template/releases/download/v{version}/tui-template_{version}_linux_{arch}.tar.gz | tar -xz tui-template\nsudo install -m0755 tui-template /usr/local/bin/tui-template",
-      "url": "https://github.com/tui-tools/tui-template/releases",
-      "note": "The template is never released. Your tool is, once you tag v0.1.0."
+      "available": true,
+      "pattern": "tui-disk_{version}_linux_{arch}.tar.gz",
+      "command": "curl -fsSL https://github.com/tui-tools/tui-disk/releases/download/v{version}/tui-disk_{version}_linux_{arch}.tar.gz | tar -xz tui-disk\nsudo install -m0755 tui-disk /usr/local/bin/tui-disk",
+      "url": "https://github.com/tui-tools/tui-disk/releases",
+      "note": "One static binary. Verify it against checksums.txt from the same release."
+    },
+    "source": {
+      "available": true,
+      "command": "git clone https://github.com/tui-tools/tui-disk\ncd tui-disk && make build\nsudo install -m0755 bin/tui-disk /usr/local/bin/tui-disk",
+      "url": "https://github.com/tui-tools/tui-disk",
+      "note": "Needs Go 1.27 or newer."
     }
   },
   "security": {
-    "needs_sudo": "Only the touch action escalates, and only when the configured prefix is non-empty. Listing a directory is an ordinary read. Replace this sentence with what your own tool escalates for.",
+    "needs_sudo": "Most reads are unprivileged: lsblk, findmnt, df, `btrfs filesystem usage`, `btrfs scrub status` and `btrfs device stats` answer to any user. Four do not, and escalate with `sudo -n`, which never prompts: blkid, `btrfs subvolume list`, `btrfs qgroup show` and `btrfs balance status`, plus `smartctl -a`, which needs the raw device. A machine that cannot escalate loses those sections and keeps the rest. Every change escalates the same way: mount, umount, scrub, balance, self-test, and the `install` plus `systemctl daemon-reload` that apply an fstab edit.",
     "preview_before_run": true,
     "no_daemon": true,
     "no_network": true,
     "static_binary": true,
     "signed_releases": false,
     "config_paths": [
-      "/etc/tui-template/config.toml",
-      "~/.config/tui-template/config.toml"
+      "/etc/tui-disk/config.toml",
+      "~/.config/tui-disk/config.toml"
     ]
   },
   "maintainers": [
@@ -140,10 +274,16 @@
   ],
   "since": "2026-08-29",
   "keywords": [
-    "template",
-    "scaffold",
-    "bubbletea",
-    "starter"
-  ],
-  "unreleased": true
+    "storage",
+    "disk",
+    "lsblk",
+    "findmnt",
+    "fstab",
+    "mount",
+    "btrfs",
+    "smart",
+    "smartctl",
+    "tui",
+    "bubbletea"
+  ]
 }

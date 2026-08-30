@@ -1,0 +1,5 @@
+qgroupid         rfer         excl     max_rfer     max_excl 
+--------         ----         ----     --------     -------- 
+0/5          16.00KiB     16.00KiB         none         none 
+0/256        41.22GiB      2.31GiB    100.00GiB         none 
+0/257       141.49GiB    139.02GiB         none         none 

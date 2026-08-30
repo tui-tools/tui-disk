@@ -1,0 +1,304 @@
+{
+   "blockdevices": [
+      {
+         "name": "sda",
+         "kname": "sda",
+         "type": "disk",
+         "size": "0B",
+         "fstype": null,
+         "fsused": null,
+         "fsuse%": null,
+         "mountpoints": [
+            null
+         ],
+         "label": null,
+         "uuid": null,
+         "model": "STORAGE DEVICE",
+         "serial": "000000000001",
+         "rota": false,
+         "tran": "usb",
+         "rm": true,
+         "ro": false,
+         "partuuid": null
+      },
+      {
+         "name": "zram0",
+         "kname": "zram0",
+         "type": "disk",
+         "size": "8G",
+         "fstype": "swap",
+         "fsused": null,
+         "fsuse%": null,
+         "mountpoints": [
+            "[SWAP]"
+         ],
+         "label": "zram0",
+         "uuid": "e6098946-60dd-4013-855e-1720112f10e2",
+         "model": null,
+         "serial": null,
+         "rota": false,
+         "tran": null,
+         "rm": false,
+         "ro": false,
+         "partuuid": null
+      },
+      {
+         "name": "nvme1n1",
+         "kname": "nvme1n1",
+         "type": "disk",
+         "size": "476.9G",
+         "fstype": null,
+         "fsused": null,
+         "fsuse%": null,
+         "mountpoints": [
+            null
+         ],
+         "label": null,
+         "uuid": null,
+         "model": "XPG GAMMIX S70 BLADE",
+         "serial": "S64ANE0T000001",
+         "rota": false,
+         "tran": "nvme",
+         "rm": false,
+         "ro": false,
+         "partuuid": null,
+         "children": [
+            {
+               "name": "nvme1n1p1",
+               "kname": "nvme1n1p1",
+               "type": "part",
+               "size": "100M",
+               "fstype": "vfat",
+               "fsused": null,
+               "fsuse%": null,
+               "mountpoints": [
+                  null
+               ],
+               "label": null,
+               "uuid": "6634-2E6D",
+               "model": null,
+               "serial": null,
+               "rota": false,
+               "tran": "nvme",
+               "rm": false,
+               "ro": false,
+               "partuuid": "dc77d035-9cb8-4e5b-be5a-82bd59f15e01"
+            },
+            {
+               "name": "nvme1n1p2",
+               "kname": "nvme1n1p2",
+               "type": "part",
+               "size": "16M",
+               "fstype": null,
+               "fsused": null,
+               "fsuse%": null,
+               "mountpoints": [
+                  null
+               ],
+               "label": null,
+               "uuid": null,
+               "model": null,
+               "serial": null,
+               "rota": false,
+               "tran": "nvme",
+               "rm": false,
+               "ro": false,
+               "partuuid": "d8e261ff-fd26-403f-807e-90ad1976faf0"
+            },
+            {
+               "name": "nvme1n1p3",
+               "kname": "nvme1n1p3",
+               "type": "part",
+               "size": "145.7G",
+               "fstype": "ntfs",
+               "fsused": null,
+               "fsuse%": null,
+               "mountpoints": [
+                  null
+               ],
+               "label": null,
+               "uuid": "9E1061081060E92B",
+               "model": null,
+               "serial": null,
+               "rota": false,
+               "tran": "nvme",
+               "rm": false,
+               "ro": false,
+               "partuuid": "b875b2c6-c867-473d-a36b-90a53892944c"
+            },
+            {
+               "name": "nvme1n1p4",
+               "kname": "nvme1n1p4",
+               "type": "part",
+               "size": "807M",
+               "fstype": "ntfs",
+               "fsused": null,
+               "fsuse%": null,
+               "mountpoints": [
+                  null
+               ],
+               "label": null,
+               "uuid": "D42EE3A92EE3833A",
+               "model": null,
+               "serial": null,
+               "rota": false,
+               "tran": "nvme",
+               "rm": false,
+               "ro": false,
+               "partuuid": "9ac64855-07df-4336-b896-ce6e9e963931"
+            },
+            {
+               "name": "nvme1n1p5",
+               "kname": "nvme1n1p5",
+               "type": "part",
+               "size": "1G",
+               "fstype": "vfat",
+               "fsused": "19.3M",
+               "fsuse%": "2%",
+               "mountpoints": [
+                  "/boot/efi"
+               ],
+               "label": null,
+               "uuid": "25F9-AF7B",
+               "model": null,
+               "serial": null,
+               "rota": false,
+               "tran": "nvme",
+               "rm": false,
+               "ro": false,
+               "partuuid": "d262a242-5582-400c-b292-dd812ac5b55e"
+            },
+            {
+               "name": "nvme1n1p6",
+               "kname": "nvme1n1p6",
+               "type": "part",
+               "size": "1G",
+               "fstype": "ext3",
+               "fsused": "423.6M",
+               "fsuse%": "43%",
+               "mountpoints": [
+                  "/boot"
+               ],
+               "label": null,
+               "uuid": "68fe8934-02da-4a6f-84dd-0a8f3e63c041",
+               "model": null,
+               "serial": null,
+               "rota": false,
+               "tran": "nvme",
+               "rm": false,
+               "ro": false,
+               "partuuid": "e6094f17-00aa-4b0e-b35a-3cd826b2d4c3"
+            },
+            {
+               "name": "nvme1n1p7",
+               "kname": "nvme1n1p7",
+               "type": "part",
+               "size": "328.3G",
+               "fstype": "btrfs",
+               "fsused": "278.6G",
+               "fsuse%": "85%",
+               "mountpoints": [
+                  "/"
+               ],
+               "label": null,
+               "uuid": "c56f896c-d8dc-4253-9402-4e7af5267047",
+               "model": null,
+               "serial": null,
+               "rota": false,
+               "tran": "nvme",
+               "rm": false,
+               "ro": false,
+               "partuuid": "47d02556-fc35-42bf-95d2-111fcb9081fa"
+            }
+         ]
+      },
+      {
+         "name": "nvme0n1",
+         "kname": "nvme0n1",
+         "type": "disk",
+         "size": "1.9T",
+         "fstype": null,
+         "fsused": null,
+         "fsuse%": null,
+         "mountpoints": [
+            null
+         ],
+         "label": null,
+         "uuid": null,
+         "model": "TEAM TM8FP6002T",
+         "serial": "112100000000001",
+         "rota": false,
+         "tran": "nvme",
+         "rm": false,
+         "ro": false,
+         "partuuid": null,
+         "children": [
+            {
+               "name": "nvme0n1p1",
+               "kname": "nvme0n1p1",
+               "type": "part",
+               "size": "1.4T",
+               "fstype": "crypto_LUKS",
+               "fsused": null,
+               "fsuse%": null,
+               "mountpoints": [
+                  null
+               ],
+               "label": null,
+               "uuid": "03fa56b4-8a7d-4d2f-8e20-be305cf5d5a7",
+               "model": null,
+               "serial": null,
+               "rota": false,
+               "tran": "nvme",
+               "rm": false,
+               "ro": false,
+               "partuuid": "9a5e2f5b-38b8-4f92-95f5-771da3f20854",
+               "children": [
+                  {
+                     "name": "home",
+                     "kname": "dm-0",
+                     "type": "crypt",
+                     "size": "1.4T",
+                     "fstype": "ext4",
+                     "fsused": "1.2T",
+                     "fsuse%": "84%",
+                     "mountpoints": [
+                        "/home"
+                     ],
+                     "label": "home",
+                     "uuid": "50c60459-7bac-4386-87cc-ed49fe9157b6",
+                     "model": null,
+                     "serial": null,
+                     "rota": false,
+                     "tran": null,
+                     "rm": false,
+                     "ro": false,
+                     "partuuid": null
+                  }
+               ]
+            },
+            {
+               "name": "nvme0n1p2",
+               "kname": "nvme0n1p2",
+               "type": "part",
+               "size": "477.2G",
+               "fstype": "ntfs",
+               "fsused": "369.7G",
+               "fsuse%": "77%",
+               "mountpoints": [
+                  "/ntfs_dados"
+               ],
+               "label": "ntfs_data",
+               "uuid": "4E37CDB20ED4C9BD",
+               "model": null,
+               "serial": null,
+               "rota": false,
+               "tran": "nvme",
+               "rm": false,
+               "ro": false,
+               "partuuid": "cc86abc8-759e-4ba5-8794-f20ed5694c44"
+            }
+         ]
+      }
+   ]
+}

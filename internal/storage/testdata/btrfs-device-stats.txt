@@ -1,0 +1,5 @@
+[/dev/nvme1n1p7].write_io_errs    0
+[/dev/nvme1n1p7].read_io_errs     0
+[/dev/nvme1n1p7].flush_io_errs    0
+[/dev/nvme1n1p7].corruption_errs  0
+[/dev/nvme1n1p7].generation_errs  0

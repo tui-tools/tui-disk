@@ -1,14 +1,19 @@
-# tui-template configuration.
+# tui-disk configuration.
 #
-# Read from /etc/tui-template/config.toml first, then
-# ~/.config/tui-template/config.toml, with the user file overriding the
-# machine-wide one. TUI_TEMPLATE_* environment variables override both, and
+# Read from /etc/tui-disk/config.toml first, then
+# ~/.config/tui-disk/config.toml, with the user file overriding the
+# machine-wide one. TUI_DISK_* environment variables override both, and
 # command line flags override everything.
 
-# This tool's own key: the directory to list. Replace it with yours.
-dir = "."
-
-# Privilege escalation prefix used for actions; "" runs the command directly.
+# Privilege escalation prefix. It is used for the changes — mount, umount,
+# scrub, balance, self-test, and the install plus daemon-reload that apply an
+# fstab edit — and for the handful of reads that do not answer to an ordinary
+# user: blkid, `btrfs subvolume list`, `btrfs qgroup show`,
+# `btrfs balance status` and `smartctl -a`.
+#
+# "sudo -n" never prompts: a machine where it would is a machine that loses
+# those sections and keeps the rest. "" runs the commands directly, which is
+# what you want when tui-disk is already running as root.
 sudo = "sudo -n"
 
 # Path to an Omarchy-style colors.toml. Empty follows the active Omarchy
@@ -16,5 +21,5 @@ sudo = "sudo -n"
 theme = ""
 
 # Every key can also be set in the environment, upper-cased and prefixed:
-#   TUI_TEMPLATE_DIR=/srv
-#   TUI_TEMPLATE_SUDO="doas"
+#   TUI_DISK_SUDO="doas"
+#   TUI_DISK_THEME=/etc/tui/colors.toml

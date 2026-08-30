@@ -1,0 +1,12 @@
+{
+  "json_format_version": [ 1, 0 ],
+  "smartctl": {
+    "version": [ 7, 5 ],
+    "argv": [ "smartctl", "--json=c", "-a", "/dev/vda" ],
+    "messages": [
+      { "string": "Unavailable - device lacks SMART capability.", "severity": "information" }
+    ],
+    "exit_status": 4
+  },
+  "device": { "name": "/dev/vda", "info_name": "/dev/vda", "type": "scsi", "protocol": "SCSI" }
+}
