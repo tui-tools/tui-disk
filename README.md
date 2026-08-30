@@ -1,5 +1,7 @@
 <img src="assets/logo.png" alt="tui-disk" width="240">
 
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/tui-tools/tui-disk/badge)](https://scorecard.dev/viewer/?uri=github.com/tui-tools/tui-disk)
+
 A terminal UI for the machine's storage. The disks you actually have, the mount
 table crossed against `/etc/fstab`, the btrfs filesystems in full and the SMART
 health of every drive — on one screen, and **every change is previewed as the

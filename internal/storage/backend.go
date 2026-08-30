@@ -841,7 +841,9 @@ func stageFile(destination, content string) (string, error) {
 		return "", err
 	}
 	path := filepath.Join(dir, filepath.Base(destination))
-	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
+	// The staging directory is already 0700, and the mode here is the one the
+	// destination wants: fstab, crypttab and the rest are world-readable.
+	if err := os.WriteFile(path, []byte(content), 0o644); err != nil { //nolint:gosec // written inside a 0700 temporary directory, with the mode the destination file has
 		return "", err
 	}
 	return path, nil

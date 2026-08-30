@@ -11,7 +11,7 @@ import (
 // read loads a captured command output from testdata.
 func read(t *testing.T, name string) string {
 	t.Helper()
-	raw, err := os.ReadFile(filepath.Join("testdata", name))
+	raw, err := os.ReadFile(filepath.Join("testdata", name)) //nolint:gosec // the name is a literal in the tests above, and testdata is in the repository
 	if err != nil {
 		t.Fatalf("reading %s: %v", name, err)
 	}
