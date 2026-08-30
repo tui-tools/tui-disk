@@ -404,7 +404,7 @@ hidden; one below the minimum is marked as such and the tool still runs.
 
 | Versions | What changes |
 | --- | --- |
-| `>=5.10` | `--format json` is supported per command, not globally: `device stats` and `filesystem df` emit JSON, while `filesystem usage`, `subvolume list`, `scrub status` and `balance status` answer "output format json is unsupported for this command" through 6.19 at least, so those four are read from their text output |
+| `>=5.10` | `--format json` is supported per command, not globally: `device stats` and `filesystem df` emit JSON, while `filesystem usage`, `subvolume list`, `scrub status` and `balance status` refuse it through 6.19 at least, so those four are read from their text output |
 | `>=5.10` | `subvolume list`, `qgroup show` and `balance status` refuse an unprivileged caller with "Operation not permitted"; they are retried with `sudo -n`, and a machine that cannot escalate shows those sections empty with a note saying so |
 | `<5.15` | no `--format json` at all, so `device stats` is read from its text output too |
 
