@@ -287,6 +287,7 @@ should be doing behind your back.
 tui-disk                          # drive the real machine
 tui-disk --demo                   # sample machine, no privileges needed
 tui-disk --check                  # read the storage, print JSON, exit
+tui-disk --report                 # print what a bug report needs, exit
 tui-disk --theme ~/mytheme/colors.toml
 tui-disk --sudo ""                # run the commands directly (as root)
 tui-disk --version
@@ -326,6 +327,46 @@ healthy.
 [tui-lab](https://github.com/tui-tools/tui-lab) uses it to test this tool
 against real machines on Ubuntu, Fedora and Omarchy Server; the assertions live
 in [`test/smoke.sh`](test/smoke.sh).
+
+### `--report`, for bug reports
+
+`--report` prints, in one block, everything a maintainer has to ask for
+otherwise: the tool and kit versions, the version probed off util-linux and
+what the probes found of btrfs-progs and smartmontools, the distribution, the
+kernel, the terminal, the theme, the escalation prefix, and whether the running
+binary came from a package. It needs no privileges and reads no storage, so it
+is quick and it works on the machine where the bug is — including one where no
+backend can be selected at all, which is itself a thing worth reporting.
+
+```console
+$ tui-disk --report
+tui-disk 0.1.0 (kit v0.2.9)
+backend: util-linux 2.40.4
+mode: live
+distro: fedora 42 (Fedora Linux 42 (Workstation Edition))
+kernel: 6.19.14-108.fc42.x86_64
+arch: x86_64
+locale: en_US.UTF-8
+term: xterm-256color
+theme: tokyo-night
+sudo: sudo -n
+root: no
+binary: /usr/bin/tui-disk (packaged)
+optional backends: btrfs-progs 6.19.1, smartmontools 7.5
+```
+
+The two optional packages are on their own line because an empty btrfs or SMART
+screen is usually a package that is not installed rather than a parser that got
+something wrong.
+
+The block is written to be published as it is: it carries no hostname, user
+name, home path or address, and no environment variable beyond `LANG`,
+`LC_ALL`, `TERM` and `TERM_PROGRAM`. A binary living under your home directory
+is reported as being there without naming the path. `--report` works with
+`--demo` too, where it says so on the `mode` line.
+
+The bug form asks for this block first — see
+[`.github/ISSUE_TEMPLATE/bug_report.yml`](.github/ISSUE_TEMPLATE/bug_report.yml).
 
 ## What needs root
 

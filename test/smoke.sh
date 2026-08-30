@@ -124,6 +124,53 @@ check "check reads the storage unprivileged" \
   "$bin --check" \
   '"backend": "util-linux"'
 
+# --- the report block ------------------------------------------------------
+#
+# --report is read-only and unprivileged, so it is smoked without sudo: a user
+# who cannot escalate is exactly the one who most needs to be able to file a
+# usable bug. What is asserted is that it agrees with the backend this machine
+# is being driven through, that it still answers under --demo, and that it
+# keeps its privacy promise — the block goes into a public issue, so a home
+# path or the host name appearing in it is a bug, not a cosmetic detail.
+check "report names the selected backend" \
+  "$bin --report" \
+  '^backend: util-linux'
+
+check "report says the run was live" \
+  "$bin --report" \
+  '^mode: live$'
+
+check "report works in demo mode too" \
+  "$bin --demo --report" \
+  '^backend: demo$'
+
+check "and says so on the mode line" \
+  "$bin --demo --report" \
+  '^mode: demo'
+
+# The distro and kernel lines are excluded from the host-name search rather
+# than from the promise: they are built from /etc/os-release and from uname's
+# release and machine fields, never from its nodename, and on a guest called
+# "fedora" or "ubuntu" — which is most of them — the host name is a substring
+# of the distribution's own. Everything else in the block is searched.
+check "report leaks neither a home path nor the host name" \
+  "$bin --report | grep -vE '^(distro|kernel): ' | grep -cE '/home/|$(uname -n)' || true" \
+  '^0$'
+
+# The optional packages are this tool's own half of the block, and they must
+# agree with what this guest really has: a version when the binary is here, a
+# reason when it is not.
+if [[ $has_btrfs == yes ]]; then
+  check "report versions btrfs-progs" "$bin --report" '^optional backends: btrfs-progs [0-9]'
+else
+  check "report says btrfs-progs is not here" "$bin --report" 'btrfs-progs \(version unknown'
+fi
+if [[ $has_smart == yes ]]; then
+  check "report versions smartmontools" "$bin --report" 'smartmontools [0-9]'
+else
+  check "report says smartmontools is not here" "$bin --report" 'smartmontools \(version unknown'
+fi
+
 # 2. The device count matches what lsblk lists. This is the real parser test:
 #    a tool that fetched the output but failed to parse it reports zero.
 devices=$(lsblk -nro NAME | wc -l)
