@@ -384,7 +384,7 @@ hidden; one below the minimum is marked as such and the tool still runs.
 | Binary | `lsblk` |
 | Version read with | `lsblk --version` |
 | Minimum | 2.34 |
-| Tested | none yet |
+| Tested | `2.39.3`, `2.41.5`, `2.42.2` |
 | Version-gated features | `mountpoints` (since 2.37) |
 
 | Versions | What changes |
@@ -399,7 +399,7 @@ hidden; one below the minimum is marked as such and the tool still runs.
 | Binary | `btrfs` |
 | Version read with | `btrfs --version` |
 | Minimum | 5.10 |
-| Tested | none yet |
+| Tested | `6.6.3`, `6.19.1`, `7.1` |
 | Version-gated features | `json-output` (since 5.15) |
 
 | Versions | What changes |

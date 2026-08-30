@@ -124,7 +124,11 @@
           "impact": "`blkid` reads /dev directly and answers an unprivileged caller with an empty body and exit 0, so the fstab editor's device picker escalates with `sudo -n` and falls back to the UUIDs lsblk already reported when it cannot"
         }
       ],
-      "tested": []
+      "tested": [
+        "2.39.3",
+        "2.41.5",
+        "2.42.2"
+      ]
     },
     {
       "name": "btrfs-progs",
@@ -160,7 +164,11 @@
           "impact": "no `--format json` at all, so `device stats` is read from its text output too"
         }
       ],
-      "tested": []
+      "tested": [
+        "6.6.3",
+        "6.19.1",
+        "7.1"
+      ]
     },
     {
       "name": "smartmontools",

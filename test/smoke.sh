@@ -182,13 +182,33 @@ if [[ $has_btrfs == yes && $root_fstype == btrfs ]]; then
     '"btrfsErrors": 0'
 
 elif [[ $has_btrfs == yes ]]; then
-  # An ext4 root with btrfs-progs installed. The lab formats /dev/vdb as btrfs
-  # and mounts it at /mnt/btrfs for exactly this case: the section must appear
-  # for that filesystem and not for the root.
-  if findmnt -no FSTYPE /mnt/btrfs 2>/dev/null | grep -q btrfs; then
-    check "the btrfs section covers the second disk" \
+  # An ext4 root with btrfs-progs installed — the Ubuntu guest, and the only
+  # machine in the lab where btrfs is mounted somewhere other than /. That is
+  # the case worth asserting: the section has to follow the filesystem rather
+  # than the root.
+  #
+  # The mountpoint is asked for rather than assumed. This branch used to test
+  # /mnt/btrfs, which nothing mounts — tui-lab puts the data disk on /srv/data
+  # — so it skipped itself on every run and the non-root btrfs path was never
+  # covered at all.
+  btrfs_mount=$(findmnt -nt btrfs -o TARGET | head -1)
+  if [[ -n $btrfs_mount ]]; then
+    check "the btrfs section covers the second disk ($btrfs_mount)" \
       "$bin --check" \
-      '"Mountpoint": "/mnt/btrfs"'
+      "\"Mountpoint\": \"$btrfs_mount\""
+
+    check "at least one btrfs filesystem was read" \
+      "$bin --check" \
+      '"btrfsFilesystems": [1-9]'
+
+    check "the btrfs allocation was read" \
+      "$bin --check" \
+      '"DeviceSize": "[0-9]'
+
+    check "the btrfs error counters are clean" \
+      "$bin --check" \
+      '"btrfsErrors": 0'
+
     check_absent "the btrfs section does not claim the ext4 root" \
       "$bin --check | sed -n '/\"Btrfs\"/,/^  \]/p'" \
       '"Mountpoint": "/"'

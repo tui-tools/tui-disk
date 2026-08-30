@@ -1,0 +1,6 @@
+{"backend": "util-linux", "date": "2026-08-30", "distro": "fedora-44", "result": "pass", "suite": "smoke", "tool": "tui-disk", "version": "2.41.5"}
+{"backend": "btrfs-progs", "date": "2026-08-30", "distro": "fedora-44", "result": "pass", "suite": "smoke", "tool": "tui-disk", "version": "6.19.1"}
+{"backend": "util-linux", "date": "2026-08-30", "distro": "omarchy-server-4.0.1", "result": "pass", "suite": "smoke", "tool": "tui-disk", "version": "2.42.2"}
+{"backend": "btrfs-progs", "date": "2026-08-30", "distro": "omarchy-server-4.0.1", "result": "pass", "suite": "smoke", "tool": "tui-disk", "version": "7.1"}
+{"backend": "util-linux", "date": "2026-08-30", "distro": "ubuntu-24.04", "result": "pass", "suite": "smoke", "tool": "tui-disk", "version": "2.39.3"}
+{"backend": "btrfs-progs", "date": "2026-08-30", "distro": "ubuntu-24.04", "result": "pass", "suite": "smoke", "tool": "tui-disk", "version": "6.6.3"}
