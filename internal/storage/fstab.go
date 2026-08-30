@@ -75,7 +75,9 @@ func unescape(field string) string {
 			continue
 		}
 		var value int
-		if _, err := fmt.Sscanf(field[i+1:i+4], "%o", &value); err != nil || value == 0 {
+		// Three octal digits reach 0777, but an fstab escape stands for one
+		// byte, so anything above 0377 is not an escape at all.
+		if _, err := fmt.Sscanf(field[i+1:i+4], "%o", &value); err != nil || value <= 0 || value > 0xff {
 			b.WriteByte(field[i])
 			continue
 		}
