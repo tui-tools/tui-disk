@@ -157,7 +157,7 @@
         },
         {
           "range": ">=5.10",
-          "impact": "`subvolume list`, `qgroup show` and `balance status` refuse an unprivileged caller with \"Operation not permitted\"; they are retried with `sudo -n`, and a machine that cannot escalate shows those sections empty with a note saying so"
+          "impact": "`subvolume list`, `qgroup show` and `balance status` refuse an unprivileged caller with \"Operation not permitted\", and so do `scrub status` and `device stats` on some kernels (Ubuntu 24.04's 6.8); they are retried with `sudo -n`, and a machine that cannot escalate shows those sections empty with a note saying so, and counts the filesystems whose error counters were not read in `--check` as `btrfsUncounted`"
         },
         {
           "range": "<5.15",
