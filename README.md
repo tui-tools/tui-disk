@@ -535,7 +535,7 @@ hidden; one below the minimum is marked as such and the tool still runs.
 | Binary | `smartctl` |
 | Version read with | `smartctl --version` |
 | Minimum | 7.0 |
-| Tested | none yet |
+| Tested | `7.5` |
 | Version-gated features | `json-output` (since 7.0) |
 
 | Versions | What changes |

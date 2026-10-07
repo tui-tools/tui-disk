@@ -200,7 +200,9 @@
           "impact": "reading SMART needs the raw device, so it escalates with `sudo -n`; a drive behind a USB bridge that passes no SMART through, and a virtual disk that has no firmware, both come back unknown with the reason smartctl gave"
         }
       ],
-      "tested": []
+      "tested": [
+        "7.5"
+      ]
     }
   ],
   "install": {
