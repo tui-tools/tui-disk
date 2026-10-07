@@ -4,9 +4,11 @@
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/14368/badge)](https://www.bestpractices.dev/projects/14368)
 
 <!-- stability:start -->
-> **Beta.** The family is days old and still changing. Package names, flags
-> and keys may move without notice until 1.0. Pin versions, and report what
-> breaks.
+> **Stable since v1.0.0.** Keys, flags and the `--check` JSON follow semver:
+> anything new arrives in a minor release, and a removal or a change of meaning
+> waits for the next major, announced one minor before. What stable means: [the
+> family's
+> bar](https://github.com/tui-tools/tui-kit/blob/main/docs/stability.md).
 <!-- stability:end -->
 
 A terminal UI for the machine's storage. The disks you actually have, the mount
@@ -20,9 +22,8 @@ screen, in the [Omarchy](https://omarchy.org) visual style.
 
 ![The device tree](docs/screenshots/tui-disk-devices.png)
 
-> **Status: early, under validation.** An independent tool that follows the
-> Omarchy visual style; it is **not** part of the Omarchy project and not
-> endorsed by its maintainers. Expect rough edges.
+> An independent tool that follows the Omarchy visual style; it is not part of
+> the Omarchy project and not endorsed by its maintainers.
 
 ## Install
 
@@ -130,7 +131,7 @@ Upgrades then arrive with the rest of your system updates.
 ### Any distribution, static binary
 
 ```sh
-curl -fsSL https://github.com/tui-tools/tui-disk/releases/download/v0.1.4/tui-disk_0.1.4_linux_amd64.tar.gz | tar -xz tui-disk
+curl -fsSL https://github.com/tui-tools/tui-disk/releases/download/v1.0.0/tui-disk_1.0.0_linux_amd64.tar.gz | tar -xz tui-disk
 sudo install -m0755 tui-disk /usr/local/bin/tui-disk
 ```
 
@@ -281,9 +282,42 @@ same as healthy.
 ## Space
 
 Per mounted filesystem, what `df` says, with a bar. What is *filling* a
-filesystem is a question v0.1 does not answer: it names `ncdu -x <mount>` and
+filesystem is a question it does not answer: it names `ncdu -x <mount>` and
 points at it, because walking a tree is not something a preview-and-confirm tool
 should be doing behind your back.
+
+## Stability
+
+tui-disk is stable since 1.0.0 and follows [semver](https://semver.org). What
+is frozen is the contract a script or a habit can depend on:
+
+- the keys: every key the help screen (`?`) and [Keys](#keys) list, on the
+  five screens and the detail screen, and in the fstab form (`tab`,
+  `shift+tab`, `←`/`→`, `enter`, `esc`);
+- the flags: `--check`, `--demo`, `--report`, `--sudo`, `--theme` and
+  `--version`, and the `TUI_DISK_*` configuration keys (`sudo`, `theme`);
+- the `--check` JSON: every field name and what it means. At the top level:
+  `tool`, `version`, `backend`, `describe`, the counts (`devices`, `disks`,
+  `mounts`, `fstabEntries`, `fstabMismatches`, `btrfsFilesystems`,
+  `btrfsErrors`, `btrfsUncounted`), `mismatchTargets`, `smartHealth`,
+  `compat` and `notes`. Each `smartHealth` row: `device`, `health`, `detail`,
+  `concerning`. `compat` holds `utilLinux`, `btrfs` and `smartmontools`, each
+  with `backend`, `version`, `minimum`, `status`, and `notes` and `detail`
+  when there are any. `mismatchTargets`, `notes` and a row's `detail` are left
+  out when empty, and that is part of their meaning.
+
+Not part of the contract: the `model` field of `--check`. It is a diagnostic
+dump of the tool's internal state, there for bug reports, and it may change in
+any release, minor or patch. Do not script against it; everything a script
+needs is in the fields above.
+
+A minor release only adds: new keys, new flags, new `--check` fields. Removing
+or renaming one, or changing what it means, happens only in a major release,
+and the minor release before that major warns about it, on screen and in
+`--check`. The commands a key previews may gain a safer flag or a check in a
+minor release; what they change on the machine does not. The bar a tool in the
+family meets to be called stable is in [tui-kit's stability
+page](https://github.com/tui-tools/tui-kit/blob/main/docs/stability.md).
 
 ## Usage
 
@@ -374,12 +408,11 @@ The bug form asks for this block first — see
 
 ## What needs root
 
-Most reads do not. `lsblk`, `findmnt`, `df`, `btrfs filesystem usage`, `btrfs
-scrub status` and `btrfs device stats` all answer to any user, and `tui-disk`
-does not escalate to run them.
+Most reads do not. `lsblk`, `findmnt`, `df` and `btrfs filesystem usage` all
+answer to any user, and `tui-disk` does not escalate to run them.
 
-Five reads genuinely cannot answer an ordinary user, so they are tried plain
-first and retried with `sudo -n` — which never prompts — only when the answer
+The reads below cannot always answer an ordinary user, so they are tried plain
+first and retried with `sudo -n` (which never prompts) only when the answer
 comes back as a permission failure:
 
 | Read | What an unprivileged call gets |
@@ -388,7 +421,14 @@ comes back as a permission failure:
 | `btrfs subvolume list` | `ERROR: can't perform the search` |
 | `btrfs qgroup show` | `ERROR: can't list qgroups` |
 | `btrfs balance status` | `Operation not permitted` |
+| `btrfs scrub status` | `ERROR: getting dev info for scrub failed: Operation not permitted` on some kernels (Ubuntu 24.04) |
+| `btrfs device stats` | `ERROR: getting device info for <mount> failed: Operation not permitted` on the same kernels |
 | `smartctl -a` | it needs the raw device |
+
+When the device error counters cannot be read at all, the btrfs detail screen
+says "(none read)", a note says why, and `--check` counts that filesystem in
+`btrfsUncounted`: a `btrfsErrors` of zero is only a clean bill of health when
+`btrfsUncounted` is zero too.
 
 A machine where `sudo -n` would prompt loses those sections, keeps everything
 else, and says which in the status line and the help screen. The device picker
@@ -443,7 +483,7 @@ In the **fstab** form: `tab` / `shift+tab` move between fields, `←`/`→` cycl
 choice, `enter` opens a picker on a choice field and submits from a text field,
 `esc` cancels.
 
-## What v0.1 can do
+## What it can do
 
 - Read the block device tree from `lsblk -J`, with size, filesystem, usage,
   label, UUID, model, serial, transport and the rotational flag, and a usage
@@ -464,7 +504,7 @@ choice, `enter` opens a picker on a choice field and submits from a text field,
 - Show `df` per mounted filesystem, and point at `ncdu` for what fills one.
 - Follow the active Omarchy theme, and respect `NO_COLOR`.
 
-## What v0.1 cannot do
+## What it cannot do
 
 - **It never partitions anything.** No `parted`, no `mkfs`, no `wipefs`, no
   LUKS. Creating and destroying filesystems is not a thing to put behind a
@@ -519,7 +559,7 @@ hidden; one below the minimum is marked as such and the tool still runs.
 | Versions | What changes |
 | --- | --- |
 | `>=5.10` | `--format json` is supported per command, not globally: `device stats` and `filesystem df` emit JSON, while `filesystem usage`, `subvolume list`, `scrub status` and `balance status` refuse it through 6.19 at least, so those four are read from their text output |
-| `>=5.10` | `subvolume list`, `qgroup show` and `balance status` refuse an unprivileged caller with "Operation not permitted"; they are retried with `sudo -n`, and a machine that cannot escalate shows those sections empty with a note saying so |
+| `>=5.10` | `subvolume list`, `qgroup show`, `balance status`, and on some kernels (Ubuntu 24.04) `scrub status` and `device stats`, refuse an unprivileged caller; they are retried with `sudo -n`, and what still cannot be read is left empty with a note saying so |
 | `<5.15` | no `--format json` at all, so `device stats` is read from its text output too |
 
 ### smartmontools
@@ -529,7 +569,7 @@ hidden; one below the minimum is marked as such and the tool still runs.
 | Binary | `smartctl` |
 | Version read with | `smartctl --version` |
 | Minimum | 7.0 |
-| Tested | none yet |
+| Tested | `7.5` |
 | Version-gated features | `json-output` (since 7.0) |
 
 | Versions | What changes |

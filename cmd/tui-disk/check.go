@@ -45,6 +45,10 @@ type checkReport struct {
 	// with no btrfs reports zero for both, which is not a failure.
 	BtrfsFilesystems int `json:"btrfsFilesystems"`
 	BtrfsErrors      int `json:"btrfsErrors"`
+	// BtrfsUncounted is how many of those filesystems had no device error
+	// counters read at all. BtrfsErrors only counts what was read, so a zero
+	// there is a clean bill of health only when this is zero too.
+	BtrfsUncounted int `json:"btrfsUncounted"`
 
 	// SMARTHealth is one entry per drive: the device node and its verdict.
 	SMARTHealth []healthLine `json:"smartHealth"`
@@ -101,6 +105,11 @@ func runCheck(backend disk.Backend, probes compatSet, out io.Writer) error {
 		Compat:           probes,
 		Notes:            model.Notes,
 		Model:            model,
+	}
+	for _, fs := range model.Btrfs {
+		if len(fs.DeviceStats) == 0 {
+			report.BtrfsUncounted++
+		}
 	}
 	for _, entry := range model.Fstab {
 		if !entry.Comment {

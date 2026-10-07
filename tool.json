@@ -5,6 +5,8 @@
   "tagline": "Disks, mounts, fstab, btrfs and SMART, previewed before every change",
   "description": "A terminal UI for the machine's storage. Five screens over one read: the block devices with their filesystems and usage bars, the mount table crossed against `/etc/fstab`, the btrfs filesystems in full, the SMART health of every drive, and what `df` says about free space.\n\nThe mounts screen is the one that earns its keep. It shows what is mounted now next to what fstab says will be mounted next boot, and marks every row where those disagree: a filesystem mounted by hand that will vanish on reboot, an fstab entry that failed to mount and nobody noticed, and options fstab asks for that are not in effect.\n\nChanges are previewed. Mounting and unmounting an entry, starting or cancelling a btrfs scrub or balance, starting a drive self-test, and editing `/etc/fstab` — which is validated with `findmnt --verify` against the staged file BEFORE the dialog opens, shown as a unified diff, then installed and applied with `systemctl daemon-reload` — all carry the exact command line.\n\nRun `tui-disk --demo` to drive a sample machine: an NVMe root on btrfs, a spinning disk with two reallocated sectors, a USB stick mounted by hand and one fstab mismatch. Nothing touches your system.",
   "category": "storage",
+  "stability": "stable",
+  "stableSince": "1.0.0",
   "homepage": "https://github.com/tui-tools/tui-disk",
   "repo": "https://github.com/tui-tools/tui-disk",
   "license": "MIT",
@@ -157,7 +159,7 @@
         },
         {
           "range": ">=5.10",
-          "impact": "`subvolume list`, `qgroup show` and `balance status` refuse an unprivileged caller with \"Operation not permitted\"; they are retried with `sudo -n`, and a machine that cannot escalate shows those sections empty with a note saying so"
+          "impact": "`subvolume list`, `qgroup show`, `balance status`, and on some kernels (Ubuntu 24.04) `scrub status` and `device stats`, refuse an unprivileged caller; they are retried with `sudo -n`, and what still cannot be read is left empty with a note saying so"
         },
         {
           "range": "<5.15",
@@ -200,7 +202,9 @@
           "impact": "reading SMART needs the raw device, so it escalates with `sudo -n`; a drive behind a USB bridge that passes no SMART through, and a virtual disk that has no firmware, both come back unknown with the reason smartctl gave"
         }
       ],
-      "tested": []
+      "tested": [
+        "7.5"
+      ]
     }
   ],
   "install": {
