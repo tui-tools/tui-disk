@@ -224,6 +224,10 @@ if [[ $has_btrfs == yes && $root_fstype == btrfs ]]; then
 
   # 9. The device error counters are the number that matters. Zero is the
   #    expected answer on a lab guest, and a non-zero one is a real finding.
+  check "the btrfs device error counters were read" \
+    "$bin --check" \
+    '"btrfsUncounted": 0'
+
   check "the btrfs error counters are clean" \
     "$bin --check" \
     '"btrfsErrors": 0'
@@ -251,6 +255,14 @@ elif [[ $has_btrfs == yes ]]; then
     check "the btrfs allocation was read" \
       "$bin --check" \
       '"DeviceSize": "[0-9]'
+
+    # A zero error total is only worth asserting when the counters behind it
+    # were read: on a kernel that refuses `btrfs device stats` to an ordinary
+    # user, a read that was never escalated left the list null and the total
+    # at zero, and this check passed on nothing.
+    check "the btrfs device error counters were read" \
+      "$bin --check" \
+      '"btrfsUncounted": 0'
 
     check "the btrfs error counters are clean" \
       "$bin --check" \

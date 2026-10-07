@@ -33,10 +33,14 @@
 //	btrfs subvolume list      "ERROR: can't perform the search"
 //	btrfs qgroup show         "ERROR: can't list qgroups"
 //	btrfs balance status      "ERROR: … Operation not permitted"
+//	btrfs scrub status        "ERROR: getting dev info for scrub failed: Operation not permitted"
+//	btrfs device stats        "ERROR: getting device info for <mount> failed: Operation not permitted"
 //	smartctl -a               needs the raw device
 //
-// while lsblk, findmnt, df, `btrfs filesystem usage`, `btrfs scrub status` and
-// `btrfs device stats` all answer to anyone. Rather than escalate everything
+// while lsblk, findmnt, df and `btrfs filesystem usage` answer to anyone. The
+// scrub status and the device stats answer an ordinary user on some kernels
+// and refuse one on others (Ubuntu 24.04's 6.8 with btrfs-progs 6.6.3 refuses
+// both), so they are treated like the reads that always need root. Rather than escalate everything
 // or nothing, each program gets two runners — a plain one and an escalated one
 // — and the reads that can need root go through readEscalating, which tries
 // the plain call first and retries with `sudo -n` only when the answer looks
@@ -521,8 +525,9 @@ func containsString(list []string, value string) bool {
 
 // readBtrfs runs the six reads that make up one filesystem's view. Each is
 // allowed to fail on its own, because they do not all need the same
-// privileges: usage, scrub status and device stats answer to anyone, while the
-// subvolume list, the qgroups and the balance status do not.
+// privileges: usage answers to anyone, the subvolume list, the qgroups and the
+// balance status do not, and the scrub status and the device stats depend on
+// the kernel, so they are tried plain and escalated when refused.
 func (r *Real) readBtrfs(ctx context.Context, mountpoint string) disk.Btrfs {
 	fs := disk.Btrfs{Mountpoint: mountpoint}
 
@@ -539,7 +544,7 @@ func (r *Real) readBtrfs(ctx context.Context, mountpoint string) disk.Btrfs {
 		fs.Qgroups = ParseQgroups(out)
 		fs.QuotaOn = len(fs.Qgroups) > 0
 	}
-	if out, err := r.readBtrfsPlain(ctx, "scrub", "status", mountpoint); err == nil {
+	if out, err := r.readBtrfsRoot(ctx, "scrub", "status", mountpoint); err == nil {
 		fs.Scrub = ParseScrubStatus(out)
 	} else {
 		fs.Scrub = disk.Scrub{State: disk.TaskUnknown,
@@ -587,9 +592,13 @@ func (r *Real) readBtrfsRoot(ctx context.Context, args ...string) (string, error
 // so the capability gate is worth having here; everything else in this file
 // parses text because btrfs-progs refuses `--format json` for it outright,
 // through 6.19 at least.
+//
+// A read that fails leaves the counters empty and says so in the notes: an
+// empty list is not a clean one, and the error total built from it is zero
+// only because nothing was counted.
 func (r *Real) readDeviceStats(ctx context.Context, mountpoint string) []disk.DeviceStat {
 	if r.btrfsCaps.Has(FeatureBtrfsJSON) {
-		out, err := r.readBtrfsPlain(ctx, "--format", "json", "device", "stats",
+		out, err := r.readBtrfsRoot(ctx, "--format", "json", "device", "stats",
 			mountpoint)
 		if err == nil {
 			if stats, parseErr := ParseDeviceStatsJSON(out); parseErr == nil {
@@ -597,8 +606,10 @@ func (r *Real) readDeviceStats(ctx context.Context, mountpoint string) []disk.De
 			}
 		}
 	}
-	out, err := r.readBtrfsPlain(ctx, "device", "stats", mountpoint)
+	out, err := r.readBtrfsRoot(ctx, "device", "stats", mountpoint)
 	if err != nil {
+		r.notef("the device error counters of %s could not be read: %s",
+			mountpoint, runner.FirstLine(err.Error()))
 		return nil
 	}
 	return ParseDeviceStatsText(out)
