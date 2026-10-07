@@ -374,12 +374,11 @@ The bug form asks for this block first — see
 
 ## What needs root
 
-Most reads do not. `lsblk`, `findmnt`, `df`, `btrfs filesystem usage`, `btrfs
-scrub status` and `btrfs device stats` all answer to any user, and `tui-disk`
-does not escalate to run them.
+Most reads do not. `lsblk`, `findmnt`, `df` and `btrfs filesystem usage` all
+answer to any user, and `tui-disk` does not escalate to run them.
 
-Five reads genuinely cannot answer an ordinary user, so they are tried plain
-first and retried with `sudo -n` — which never prompts — only when the answer
+The reads below cannot always answer an ordinary user, so they are tried plain
+first and retried with `sudo -n` (which never prompts) only when the answer
 comes back as a permission failure:
 
 | Read | What an unprivileged call gets |
@@ -388,7 +387,14 @@ comes back as a permission failure:
 | `btrfs subvolume list` | `ERROR: can't perform the search` |
 | `btrfs qgroup show` | `ERROR: can't list qgroups` |
 | `btrfs balance status` | `Operation not permitted` |
+| `btrfs scrub status` | `ERROR: getting dev info for scrub failed: Operation not permitted` on some kernels (Ubuntu 24.04) |
+| `btrfs device stats` | `ERROR: getting device info for <mount> failed: Operation not permitted` on the same kernels |
 | `smartctl -a` | it needs the raw device |
+
+When the device error counters cannot be read at all, the btrfs detail screen
+says "(none read)", a note says why, and `--check` counts that filesystem in
+`btrfsUncounted`: a `btrfsErrors` of zero is only a clean bill of health when
+`btrfsUncounted` is zero too.
 
 A machine where `sudo -n` would prompt loses those sections, keeps everything
 else, and says which in the status line and the help screen. The device picker
@@ -519,7 +525,7 @@ hidden; one below the minimum is marked as such and the tool still runs.
 | Versions | What changes |
 | --- | --- |
 | `>=5.10` | `--format json` is supported per command, not globally: `device stats` and `filesystem df` emit JSON, while `filesystem usage`, `subvolume list`, `scrub status` and `balance status` refuse it through 6.19 at least, so those four are read from their text output |
-| `>=5.10` | `subvolume list`, `qgroup show` and `balance status` refuse an unprivileged caller with "Operation not permitted"; they are retried with `sudo -n`, and a machine that cannot escalate shows those sections empty with a note saying so |
+| `>=5.10` | `subvolume list`, `qgroup show`, `balance status`, and on some kernels (Ubuntu 24.04) `scrub status` and `device stats`, refuse an unprivileged caller; they are retried with `sudo -n`, and what still cannot be read is left empty with a note saying so |
 | `<5.15` | no `--format json` at all, so `device stats` is read from its text output too |
 
 ### smartmontools
@@ -529,7 +535,7 @@ hidden; one below the minimum is marked as such and the tool still runs.
 | Binary | `smartctl` |
 | Version read with | `smartctl --version` |
 | Minimum | 7.0 |
-| Tested | none yet |
+| Tested | `7.5` |
 | Version-gated features | `json-output` (since 7.0) |
 
 | Versions | What changes |

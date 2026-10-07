@@ -157,7 +157,7 @@
         },
         {
           "range": ">=5.10",
-          "impact": "`subvolume list`, `qgroup show` and `balance status` refuse an unprivileged caller with \"Operation not permitted\"; they are retried with `sudo -n`, and a machine that cannot escalate shows those sections empty with a note saying so"
+          "impact": "`subvolume list`, `qgroup show`, `balance status`, and on some kernels (Ubuntu 24.04) `scrub status` and `device stats`, refuse an unprivileged caller; they are retried with `sudo -n`, and what still cannot be read is left empty with a note saying so"
         },
         {
           "range": "<5.15",
@@ -200,7 +200,9 @@
           "impact": "reading SMART needs the raw device, so it escalates with `sudo -n`; a drive behind a USB bridge that passes no SMART through, and a virtual disk that has no firmware, both come back unknown with the reason smartctl gave"
         }
       ],
-      "tested": []
+      "tested": [
+        "7.5"
+      ]
     }
   ],
   "install": {
