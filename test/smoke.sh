@@ -226,7 +226,7 @@ if [[ $has_btrfs == yes && $root_fstype == btrfs ]]; then
   #    expected answer on a lab guest, and a non-zero one is a real finding.
   check "the btrfs device error counters were read" \
     "$bin --check" \
-    '"DeviceStats": \[$'
+    '"btrfsUncounted": 0'
 
   check "the btrfs error counters are clean" \
     "$bin --check" \
@@ -262,7 +262,7 @@ elif [[ $has_btrfs == yes ]]; then
     # at zero, and this check passed on nothing.
     check "the btrfs device error counters were read" \
       "$bin --check" \
-      '"DeviceStats": \[$'
+      '"btrfsUncounted": 0'
 
     check "the btrfs error counters are clean" \
       "$bin --check" \

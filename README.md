@@ -392,8 +392,9 @@ comes back as a permission failure:
 | `smartctl -a` | it needs the raw device |
 
 When the device error counters cannot be read at all, the btrfs detail screen
-says "(none read)" and a note says why: an error total of zero is only a clean
-bill of health when the counters behind it were read.
+says "(none read)", a note says why, and `--check` counts that filesystem in
+`btrfsUncounted`: a `btrfsErrors` of zero is only a clean bill of health when
+`btrfsUncounted` is zero too.
 
 A machine where `sudo -n` would prompt loses those sections, keeps everything
 else, and says which in the status line and the help screen. The device picker
