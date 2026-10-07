@@ -374,12 +374,11 @@ The bug form asks for this block first — see
 
 ## What needs root
 
-Most reads do not. `lsblk`, `findmnt`, `df`, `btrfs filesystem usage`, `btrfs
-scrub status` and `btrfs device stats` all answer to any user, and `tui-disk`
-does not escalate to run them.
+Most reads do not. `lsblk`, `findmnt`, `df` and `btrfs filesystem usage` all
+answer to any user, and `tui-disk` does not escalate to run them.
 
-Five reads genuinely cannot answer an ordinary user, so they are tried plain
-first and retried with `sudo -n` — which never prompts — only when the answer
+The reads below cannot always answer an ordinary user, so they are tried plain
+first and retried with `sudo -n` (which never prompts) only when the answer
 comes back as a permission failure:
 
 | Read | What an unprivileged call gets |
@@ -388,7 +387,13 @@ comes back as a permission failure:
 | `btrfs subvolume list` | `ERROR: can't perform the search` |
 | `btrfs qgroup show` | `ERROR: can't list qgroups` |
 | `btrfs balance status` | `Operation not permitted` |
+| `btrfs scrub status` | `ERROR: getting dev info for scrub failed: Operation not permitted` on some kernels (Ubuntu 24.04) |
+| `btrfs device stats` | `ERROR: getting device info for <mount> failed: Operation not permitted` on the same kernels |
 | `smartctl -a` | it needs the raw device |
+
+When the device error counters cannot be read at all, the btrfs detail screen
+says "(none read)" and a note says why: an error total of zero is only a clean
+bill of health when the counters behind it were read.
 
 A machine where `sudo -n` would prompt loses those sections, keeps everything
 else, and says which in the status line and the help screen. The device picker
