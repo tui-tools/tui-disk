@@ -152,7 +152,7 @@ Upgrades then arrive with the rest of your system updates.
 ### Any distribution, static binary
 
 ```sh
-curl -fsSL https://github.com/tui-tools/tui-disk/releases/download/v1.0.2/tui-disk_1.0.2_linux_amd64.tar.gz | tar -xz tui-disk
+curl -fsSL https://github.com/tui-tools/tui-disk/releases/download/v1.0.3/tui-disk_1.0.3_linux_amd64.tar.gz | tar -xz tui-disk
 sudo install -m0755 tui-disk /usr/local/bin/tui-disk
 ```
 
